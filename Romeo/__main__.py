@@ -5,7 +5,7 @@ from sys import argv
 from typing import Optional
 
 from Romeo import (ALLOW_EXCL, CERT_PATH, LOGGER,
-                          OWNER_ID, SUPPORT_CHAT, PORT, TOKEN, URL, WEBHOOK,
+                          OWNER_ID, PORT, SUPPORT_CHAT, TOKEN, URL, WEBHOOK,
                           SUPPORT_CHAT, dispatcher, StartTime, telethn, updater)
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
