@@ -11,9 +11,8 @@ StartTime = time.time()
 
 # enable logging
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler('log.txt'),
-              logging.StreamHandler()],
+    formatime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler('log.txt'),()],
     level=logging.INFO)
 
 LOGGER = logging.getLogger(__name__)
@@ -39,14 +38,14 @@ if ENV:
     OWNER_USERNAME = os.environ.get("OWNER_USERNAME", None)
 
     try:
-        DRAGONS = set(int(x) for x in os.environ.get("DRAGONS", "").split())
+        DRAGONS = setint(x) for x in os.environ.get("DRAGONS", "").split())
         DEV_USERS = set(int(x) for x in os.environ.get("DEV_USERS", "").split())
     except ValueError:
         raise Exception(
             "Your Sudo or Dev users list doesn't contain valid integers.")
 
     try:
-        DEMONS = set(int(x) for x in os.environ.get("DEMONS", "").split())
+        DEMONS = set(it(x) for x in os.environ.get("DEMONS", "").split())
     except ValueError:
         raise Exception(
             "Your Support users list doesn't contain valid integers.")
@@ -67,7 +66,7 @@ if ENV:
     EVENT_LOGS = os.environ.get('EVENT_LOGS', None)
     WEBHOOK = bool(os.environ.get('WEBHOOK', False))
     URL = os.environ.get('URL', "")  # Does not contain token
-    PORT = int(os.environ.get('PORT', 5000))
+    PORT = int(t('PORT', 5000))
     CERT_PATH = os.environ.get("CERT_PATH")
     API_ID = os.environ.get('API_ID', None)
     API_HASH = os.environ.get('API_HASH', None)
@@ -107,7 +106,7 @@ else:
     OWNER_USERNAME = Config.OWNER_USERNAME
 
     try:
-        DRAGONS = set(int(x) for x in Config.DRAGONS or [])
+        DRAGONS =t(x) for x in Config.DRAGONS or [])
         DEV_USERS = set(int(x) for x in Config.DEV_USERS or [])
     except ValueError:
         raise Exception(
@@ -132,8 +131,7 @@ else:
             "Your Tiger users list doesn't contain valid integers.")
 
     EVENT_LOGS = Config.EVENT_LOGS
-    WEBHOOK = Config.WEBHOOK
-    URL = Config.URL
+    WEBHOOK = Config.WEBHOOKonfig.URL
     PORT = Config.PORT
     CERT_PATH = Config.CERT_PATH
     API_ID = Config.API_ID
@@ -158,7 +156,7 @@ else:
 
     try:
         BL_CHATS = set(int(x) for x in Config.BL_CHATS or [])
-    except ValueError:
+    exError:
         raise Exception(
             "Your Blacklisted chats list doesn't contain valid integers.")
 
@@ -166,7 +164,7 @@ DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
 
 if not SPAMWATCH_API:
-    sw = None
+    
     LOGGER.warning("SpamWatch API key missing! Re-Check your config.")
 else:
     sw = spamwatch.Client(SPAMWATCH_API)
@@ -179,7 +177,7 @@ DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
 WOLVES = list(WOLVES)
 DEMONS = list(DEMONS)
-TIGERS = list(TIGERS)
+TIGERS = lis
 
 # Load at end to ensure all prev variables have been set
 from Romeo.modules.helper_funcs.handlers import (CustomCommandHandler,
@@ -189,4 +187,4 @@ from Romeo.modules.helper_funcs.handlers import (CustomCommandHandler,
 # make sure the regex handler can take extra kwargs
 tg.RegexHandler = CustomRegexHandler
 tg.CommandHandler = CustomCommandHandler
-tg.MessageHandler = CustomMessageHandler
+tg.MessageHandler = CustgeHandler
