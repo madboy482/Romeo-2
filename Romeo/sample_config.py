@@ -4,7 +4,7 @@ import os
 
 
 def get_user_list(config, key):
-    with open('{}/SaitamaRobot/{}'.format(os.getcwd(), config),
+    with open('{}/Romeo/{}'.format(os.getcwd(), config),
               'r') as json_file:
         return json.load(json_file)[key]
 
@@ -16,7 +16,7 @@ class Config(object):
     #Login to https://my.telegram.org and fill in these slots with the details given by it
 
     API_ID = 123456  # integer value, dont use ""
-    API_HASH = "awoo"
+    API_HASH = "xyz"
     TOKEN = "BOT_TOKEN"  #This var used to be API_KEY but it is now TOKEN, adjust accordingly.
     OWNER_ID = 1078841825  # If you dont know, run the bot and do /id in your private chat with it, also an integer
     OWNER_USERNAME = "Warning_MadBoy_is_Here"
@@ -51,10 +51,10 @@ class Config(object):
     WORKERS = 8  # Number of subthreads to use. Set as number of threads your processor uses
     BAN_STICKER = ''  # banhammer marie sticker id, the bot will send this sticker before banning or kicking a user in chat.
     ALLOW_EXCL = True  # Allow ! commands as well as / (Leave this to true so that blacklist can work)
-    CASH_API_KEY = 'awoo'  # Get your API key from https://www.alphavantage.co/support/#api-key
-    TIME_API_KEY = 'awoo'  # Get your API key from https://timezonedb.com/api
-    WALL_API = 'awoo'  #For wallpapers, get one from https://wall.alphacoders.com/api.php
-    AI_API_KEY = 'awoo'  #For chatbot, get one from https://coffeehouse.intellivoid.net/dashboard
+    CASH_API_KEY = 'xyz'  # Get your API key from https://www.alphavantage.co/support/#api-key
+    TIME_API_KEY = 'xyz'  # Get your API key from https://timezonedb.com/api
+    WALL_API = 'xyz'  #For wallpapers, get one from https://wall.alphacoders.com/api.php
+    AI_API_KEY = 'xyz'  #For chatbot, get one from https://coffeehouse.intellivoid.net/dashboard
     BL_CHATS = []  # List of groups that you want blacklisted.
     SPAMMERS = None
 
