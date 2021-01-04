@@ -13,8 +13,8 @@
 
 
 
-# Phoenix owns the files under blacklist thingies
 
+# Phoenix owns the files under blacklist thingies
 /Romeo/modules/blacklistusers.py @rsktg
 /Romeo/modules/sql/blacklistusers_sql.py @rsktg
 #pep8-ing the code doesn't change maker
