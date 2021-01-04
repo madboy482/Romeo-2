@@ -11,9 +11,6 @@
 * @PYTHON_CODER_SRINIVAS
 
 
-
-
-
 # Phoenix owns the files under blacklist thingies
 /Romeo/modules/blacklistusers.py @rsktg
 /Romeo/modules/sql/blacklistusers_sql.py @rsktg
