@@ -4,11 +4,11 @@ on:
 
   push:
 
-    branches: [ Romeo ]
+    branches: [ Romeo-2.0 ]
 
   pull_request:
 
-    branches: [ Romeo ]
+    branches: [ Romeo-2.0 ]
 
 jobs:
 
