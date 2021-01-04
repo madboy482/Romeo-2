@@ -65,7 +65,7 @@ RUN apt update && apt upgrade -y && \
 RUN pip3 install --upgrade pip setuptools
 
 # Copy Python Requirements to /root/SaitamaRobot
-RUN git clone -b shiken https://github.com/madboy482/Romeo-2.0 /root/Romeo
+RUN git clone -b 201cb2a1cb9450de332cf38bdc323f8c3f4d3ee8 https://github.com/madboy482/Romeo-2.0 /root/Romeo
 WORKDIR /root/Romeo
 
 #Copy config file to /root/SaitamaRobot/SaitamaRobot
