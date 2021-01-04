@@ -34,5 +34,5 @@ jobs:
 
           buildoptions: --force-rm --compress --no-cache --squash
 
-          tags: "Romeo"
+          tags: "Romeo-2.0"
 
