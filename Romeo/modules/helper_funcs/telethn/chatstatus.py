@@ -39,12 +39,12 @@ async def is_user_admin(user_id: int, chat_id):
     return status
 
 
-async def romeo_is_admin(chat_id: int):
+async def saitama_is_admin(chat_id: int):
     status = False
-    romeo = await telethn.get_me()
+    saitama = await telethn.get_me()
     async for user in telethn.iter_participants(
             chat_id, filter=ChannelParticipantsAdmins):
-        if romeo.id == user.id:
+        if saitama.id == user.id:
             status = True
             break
     return status
@@ -103,4 +103,3 @@ async def can_delete_messages(message):
         return status
     else:
         return False
-
