@@ -5,14 +5,14 @@ import requests
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext, run_async
 
-from SaitamaRobot import StartTime, dispatcher
-from SaitamaRobot.modules.helper_funcs.chat_status import sudo_plus
-from SaitamaRobot.modules.disable import DisableAbleCommandHandler
+from Romeo import StartTime, dispatcher
+from Romeo.modules.helper_funcs.chat_status import sudo_plus
+from Romeo.modules.disable import DisableAbleCommandHandler
 
 sites_list = {
     "Telegram": "https://api.telegram.org",
-    "Kaizoku": "https://github.com/madboy482",
-    "Kayo": "https://github.com/madboyop",
+    "MadBoy482": "https://github.com/madboy482",
+    "MadBoyOp": "https://github.com/madboyop",
     "Jikan": "https://api.jikan.moe/v3"
 }
 
