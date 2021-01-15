@@ -1,3 +1,3 @@
-worker: python3 -m Romeo-2.0
-web: python3 -m Romeo-2.0
+worker: python3 -m Romeo
+web: python3 -m Romeo
 ps:scale worker=1
