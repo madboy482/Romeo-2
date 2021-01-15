@@ -1,117 +1,89 @@
-import html
-from typing import List
+import time
+from telethon import events
 
-from telegram import Bot, Update, ParseMode
-from telegram.error import BadRequest
-from telegram.ext import Filters, run_async
-from telegram.utils.helpers import mention_html
-
-from Romeo import dispatcher, LOGGER
-from Romeo.modules.disable import DisableAbleCommandHandler
-from Romeo.modules.helper_funcs.chat_status import user_admin, can_delete
-from Romeo.modules.log_channel import loggable
+from Romeo import telethn
+from Romeo.modules.helper_funcs.telethn.chatstatus import (
+    can_delete_messages, user_is_admin)
 
 
-@run_async
-@user_admin
-@loggable
-def purge(bot: Bot, update: Update, args: List[str]) -> str:
-    msg = update.effective_message
-    user = update.effective_user
-    chat = update.effective_chat
+async def purge_messages(event):
+    start = time.perf_counter()
+    if event.from_id is None:
+        return
 
-    if can_delete(chat, bot.id):
+    if not await user_is_admin(
+            user_id=event.sender_id, message=event) and event.from_id not in [
+                1087968824
+            ]:
+        await event.reply("Only Admins are allowed to use this command. 😒")
+        return
 
-        if msg.reply_to_message:
+    if not await can_delete_messages(message=event):
+        await event.reply("Can't seem to purge the message. 😐")
+        return
 
-            message_id = msg.reply_to_message.message_id
-            start_message_id = message_id - 1
-            delete_to = msg.message_id - 1
+    reply_msg = await event.get_reply_message()
+    if not reply_msg:
+        await event.reply(
+            "Reply to a message to select where to start purging from. 👀")
+        return
+    messages = []
+    message_id = reply_msg.id
+    delete_to = event.message.id
 
-            if args and args[0].isdigit():
-                new_del = message_id + int(args[0])
-                # No point deleting messages which haven't been written yet.
-                if new_del < delete_to:
-                    delete_to = new_del
-        else:
+    messages.append(event.reply_to_msg_id)
+    for msg_id in range(message_id, delete_to + 1):
+        messages.append(msg_id)
+        if len(messages) == 100:
+            await event.client.delete_messages(event.chat_id, messages)
+            messages = []
 
-            if args and args[0].isdigit():
-                messages_to_delete = int(args[0])
-
-            if messages_to_delete < 1:
-                msg.reply_text("Can't purge less than 1 message. 😒")
-                return ""
-
-            delete_to = msg.message_id - 1
-            start_message_id = delete_to - messages_to_delete
-
-        for m_id in range(delete_to, start_message_id, -1):  # Reverse iteration over message ids
-
-            try:
-                bot.deleteMessage(chat.id, m_id)
-            except BadRequest as err:
-                if err.message == "Message can't be deleted 👀":
-                    bot.send_message(chat.id, "Cannot delete all messages 😐. The messages may be too old 🤨, I might "
-                                              "not have delete rights 🧐, or this might not be a supergroup 🤔.")
-
-                elif err.message != "Message to delete not found 🧐🧐":
-                    LOGGER.exception("Error while purging chat messages 🥴.")
-
-        try:
-            msg.delete()
-        except BadRequest as err:
-            if err.message == "Message can't be deleted 👀":
-                bot.send_message(chat.id, "Cannot delete all messages 😐. The messages may be too old 🤨, I might "
-                                          "not have delete rights 🧐, or this might not be a supergroup 🤔.")
-
-            elif err.message != "Message to delete not found 🧐🧐":
-                LOGGER.exception("Error while purging chat messages 🥴.")
-
-        bot.send_message(chat.id, f"Purge <code>{delete_to - start_message_id}</code> messages.",
-                         parse_mode=ParseMode.HTML)
-        return (f"<b>{html.escape(chat.title)}:</b>\n"
-                f"#PURGE\n"
-                f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                f"Purged <code>{delete_to - start_message_id}</code> messages.")
-
-    return ""
+    try:
+        await event.client.delete_messages(event.chat_id, messages)
+    except:
+        pass
+    time_ = time.perf_counter() - start
+    text = f"Purged Successfully in {time_:0.2f} Second(s)"
+    await event.respond(text, parse_mode='markdown')
 
 
-@run_async
-@user_admin
-@loggable
-def del_message(bot: Bot, update: Update) -> str:
-    if update.effective_message.reply_to_message:
-        user = update.effective_user
-        chat = update.effective_chat
-        if can_delete(chat, bot.id):
-            update.effective_message.reply_to_message.delete()
-            update.effective_message.delete()
-            return (f"<b>{html.escape(chat.title)}:</b>\n"
-                    f"#DEL\n"
-                    f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                    f"Message deleted.")
-    else:
-        update.effective_message.reply_text("Whadya want to delete?")
+async def delete_messages(event):
+    if event.from_id is None:
+        return
 
-    return ""
+    if not await user_is_admin(
+            user_id=event.sender_id, message=event) and event.from_id not in [
+                1087968824
+            ]:
+        await event.reply("Only Admins are allowed to use this command. 😒")
+        return
+
+    if not await can_delete_messages(message=event):
+        await event.reply("Can't seem to delete this? 😐")
+        return
+
+    message = await event.get_reply_message()
+    if not message:
+        await event.reply("Whadya want to delete? 🤔🤔")
+        return
+    chat = await event.get_input_chat()
+    del_message = [message, event.message]
+    await event.client.delete_messages(chat, del_message)
 
 
 __help__ = """
 *Admin only:*
- - /del: deletes the message you replied to 👀.
- - /purge: deletes all messages between this and the replied to message 😁.
- - /purge <integer X>: deletes the replied message, and X messages following it if replied to a message 😁.
- - /purge <integer X>: deletes the number of messages starting from bottom 😁. (Counts manaully deleted messages too)
+ - /del: Deletes the Message you replied to 👀.
+ - /purge: Deletes all Messages between this and the replied to Message 😁.
+ - /purge <integer X>: Deletes the replied Message, and X Messages following it if replied to a Message 😁.
 """
 
-DELETE_HANDLER = DisableAbleCommandHandler("del", del_message, filters=Filters.group)
-PURGE_HANDLER = DisableAbleCommandHandler("purge", purge, filters=Filters.group, pass_args=True)
+PURGE_HANDLER = purge_messages, events.NewMessage(pattern="^[!/]purge$")
+DEL_HANDLER = delete_messages, events.NewMessage(pattern="^[!/]del$")
 
-dispatcher.add_handler(DELETE_HANDLER)
-dispatcher.add_handler(PURGE_HANDLER)
+telethn.add_event_handler(*PURGE_HANDLER)
+telethn.add_event_handler(*DEL_HANDLER)
 
-__mod_name__ = "PURGE & DEL"
+__mod_name__ = "Purge"
 __command_list__ = ["del", "purge"]
-__handlers__ = [DELETE_HANDLER, PURGE_HANDLER]
-
+__handlers__ = [PURGE_HANDLER, DEL_HANDLER]
