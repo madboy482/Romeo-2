@@ -95,7 +95,7 @@ if ENV:
             "Your Blacklisted chats list doesn't contain valid integers.")
 
 else:
-    from Romeo.config import Development as Config
+    from SaitamaRobot.config import Development as Config
     TOKEN = Config.TOKEN
 
     try:
@@ -182,7 +182,7 @@ DEMONS = list(DEMONS)
 TIGERS = list(TIGERS)
 
 # Load at end to ensure all prev variables have been set
-from Romeo.modules.helper_funcs.handlers import (CustomCommandHandler,
+from SaitamaRobot.modules.helper_funcs.handlers import (CustomCommandHandler,
                                                         CustomMessageHandler,
                                                         CustomRegexHandler)
 
